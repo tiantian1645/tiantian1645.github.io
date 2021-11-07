@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Visual Studio Code 编辑器 支持多光标 括号颜色 或者设置项editor.bracketPairColorization.enabled 另外括号匹配范围设置项也很不错 editor.guides.bracketPairs 更多VsCode 括号效果细节 插件-交换两个光标 插件-输入序列数据 等宽字体-FiraCode 调试STM32 实际上只需完成到第二章编译，即可在VSCo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一些单片机开发技巧">
+<meta property="og:url" content="http://example.com/2021/11/07/%E4%B8%80%E4%BA%9B%E5%8D%95%E7%89%87%E6%9C%BA%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/index.html">
+<meta property="og:site_name" content="Mengy自留地">
+<meta property="og:description" content="Visual Studio Code 编辑器 支持多光标 括号颜色 或者设置项editor.bracketPairColorization.enabled 另外括号匹配范围设置项也很不错 editor.guides.bracketPairs 更多VsCode 括号效果细节 插件-交换两个光标 插件-输入序列数据 等宽字体-FiraCode 调试STM32 实际上只需完成到第二章编译，即可在VSCo">
+<meta property="og:locale">
+<meta property="article:published_time" content="2021-11-07T12:09:00.000Z">
+<meta property="article:modified_time" content="2021-11-07T12:28:34.220Z">
+<meta property="article:author" content="Mengy">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2021/11/07/%E4%B8%80%E4%BA%9B%E5%8D%95%E7%89%87%E6%9C%BA%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh'
+  };
+</script>
+
+  <title>一些单片机开发技巧 | Mengy自留地</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Mengy自留地</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">梦Y</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/11/07/%E4%B8%80%E4%BA%9B%E5%8D%95%E7%89%87%E6%9C%BA%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Mengy">
+      <meta itemprop="description" content="随便瞎写">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mengy自留地">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          一些单片机开发技巧
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2021-11-07 20:09:00 / Modified: 20:28:34" itemprop="dateCreated datePublished" datetime="2021-11-07T20:09:00+08:00">2021-11-07</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="Visual-Studio-Code-编辑器"><a href="#Visual-Studio-Code-编辑器" class="headerlink" title="Visual Studio Code 编辑器"></a>Visual Studio Code 编辑器</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://code.visualstudio.com/docs/editor/codebasics">支持多光标</a></li>
+<li><a target="_blank" rel="noopener" href="https://marketplace.visualstudio.com/items?itemName=CoenraadS.bracket-pair-colorizer-2">括号颜色</a> 或者设置项<code>editor.bracketPairColorization.enabled</code> 另外括号匹配范围设置项也很不错 <code>editor.guides.bracketPairs</code> <a target="_blank" rel="noopener" href="https://code.visualstudio.com/blogs/2021/09/29/bracket-pair-colorization">更多VsCode 括号效果细节</a></li>
+<li><a target="_blank" rel="noopener" href="https://marketplace.visualstudio.com/items?itemName=v4run.transpose">插件-交换两个光标</a></li>
+<li><a target="_blank" rel="noopener" href="https://marketplace.visualstudio.com/items?itemName=tomoki1207.vscode-input-sequence">插件-输入序列数据</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/tonsky/FiraCode/wiki/VS-Code-Instructions">等宽字体-FiraCode</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/61519415">调试STM32</a> 实际上只需完成到第二章编译，即可在VSCode里实现代码补全</li>
+</ul>
+<p><strong>附上 c_cpp_properties.json</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;configurations&quot;: [&#123;</span><br><span class="line">    &quot;name&quot;: &quot;ARM none eabi GCC&quot;,</span><br><span class="line">    &quot;includePath&quot;: [</span><br><span class="line">      &quot;$&#123;workspaceFolder&#125;/**&quot;,</span><br><span class="line">    ],</span><br><span class="line">    &quot;browse&quot;: &#123;</span><br><span class="line">      &quot;path&quot;: [</span><br><span class="line">        &quot;$&#123;workspaceRoot&#125;&quot;</span><br><span class="line">      ],</span><br><span class="line">      &quot;limitSymbolsToIncludedHeaders&quot;: true,</span><br><span class="line">      &quot;databaseFilename&quot;: &quot;&quot;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;defines&quot;: [</span><br><span class="line">      &quot;DEBUG=1&quot;,</span><br><span class="line">      &quot;SystemCoreClock = 96000000UL&quot;,</span><br><span class="line">      &quot;STM32F411xE&quot;</span><br><span class="line">    ],</span><br><span class="line">    &quot;intelliSenseMode&quot;: &quot;gcc-arm&quot;,</span><br><span class="line">    &quot;compilerPath&quot;: &quot;D:\\ST\\STM32CubeIDE\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.9-2020-q2-update.win32_1.5.0.202011040924\\tools\\bin\\arm-none-eabi-gcc.exe&quot;,</span><br><span class="line">    &quot;compilerArgs&quot;: [</span><br><span class="line">      &quot;-mcpu=cortex-m4&quot;,</span><br><span class="line">      &quot;-mthumb&quot;,</span><br><span class="line">      &quot;-mfloat-abi=hard&quot;</span><br><span class="line">    ],</span><br><span class="line">    &quot;cStandard&quot;: &quot;c11&quot;,</span><br><span class="line">    &quot;cppStandard&quot;: &quot;c++17&quot;</span><br><span class="line">  &#125;],</span><br><span class="line">  &quot;version&quot;: 4</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="格式化代码"><a href="#格式化代码" class="headerlink" title="格式化代码"></a>格式化代码</h3><ul>
+<li><p><a target="_blank" rel="noopener" href="https://llvm.org/builds/">clang-format</a> | <a target="_blank" rel="noopener" href="https://marketplace.visualstudio.com/items?itemName=xaver.clang-format">VSCode插件</a> | 配置文件参考 <a target="_blank" rel="noopener" href="https://github.com/torvalds/linux/blob/master/.clang-format">linux</a></p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://zed0.co.uk/clang-format-configurator/">在线工具</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.clangpowertools.com/">本地工具</a></li>
+</ul>
+</li>
+<li><p><a target="_blank" rel="noopener" href="http://astyle.sourceforge.net/astyle.html">astyle</a> | <a target="_blank" rel="noopener" href="https://marketplace.visualstudio.com/items?itemName=chiehyu.vscode-astyle">VSCode插件</a> | 配置文件参考 <a target="_blank" rel="noopener" href="https://github.com/ARMmbed/mbed-os/blob/master/.astylerc">mbed-os</a></p>
+</li>
+</ul>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/uncrustify/uncrustify">uncrustify</a> | <a target="_blank" rel="noopener" href="https://marketplace.visualstudio.com/items?itemName=zachflower.uncrustify">VSCode插件</a> | 配置文件参考 <a target="_blank" rel="noopener" href="https://github.com/FreeRTOS/FreeRTOS/blob/main/tools/uncrustify.cfg">FreeRTOS</a></li>
+</ul>
+<p>一开始用的Astyle，后来因为其不支持注释对齐所以换成clang-format，但注释对其后会为了对齐去写无意义的注释。</p>
+<h3 id="STM32"><a href="#STM32" class="headerlink" title="STM32"></a>STM32</h3><ul>
+<li>串口接收 <a target="_blank" rel="noopener" href="https://github.com/MaJerle/stm32-usart-uart-dma-rx-tx">DMA循环模式</a> | <a target="_blank" rel="noopener" href="https://www.st.com/resource/en/application_note/cd00256689-communication-peripheral-fifo-emulation-with-dma-and-dma-timeout-in-stm32f10x-microcontrollers-stmicroelectronics.pdf">空闲判断 ST应用笔记 3109</a> - <a target="_blank" rel="noopener" href="https://github.com/akospasztor/stm32-dma-uart">方案2样例</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.st.com/resource/en/application_note/dm00236305-generalpurpose-timer-cookbook-for-stm32-microcontrollers-stmicroelectronics.pdf">定时器 cookbook</a> 第5章可用于步进电机PWM脉冲生成或者蜂鸣器控制</li>
+<li><a target="_blank" rel="noopener" href="https://mcuoneclipse.com/2019/03/29/be-aware-floating-point-operations-on-arm-cortex-m4f/">FPU使用注意事项</a> 除了H7其余都只支持单精度浮点数 <code>samples[i]*3.3/4096.0</code> 和 <code>samples[i]*3.3f/4096.0f</code> 会有显著性能区别 </li>
+<li>STM32CUbeIDE中.s文件生成参考 <a target="_blank" rel="noopener" href="https://www.st.com/resource/en/user_manual/dm00629856-stm32cubeide-user-guide-stmicroelectronics.pdf">stm32cubeide 使用手册 2.4.4 Temporary assembly file and preprocessed C code</a></li>
+<li>可以使用 <code>__attribute__((optimize(&quot;-Ofast&quot;)))</code>修饰中断服务函数 来源(阮韶南) <a target="_blank" rel="noopener" href="https://radiokot.ru/circuit/digital/measure/108/">https://radiokot.ru/circuit/digital/measure/108/</a> </li>
+<li>也可以将优化等级调至O0 <code>__attribute__((optimize(&quot;-O0&quot;)))</code> 修饰被调试的函数，避免变量被优化</li>
+</ul>
+<p><strong>以上未指明来源的均来源于谷歌搜索</strong></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/11/07/hello-world/" rel="prev" title="Hello World">
+      <i class="fa fa-chevron-left"></i> Hello World
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/11/07/%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7%E8%BD%AF%E4%BB%B6/" rel="next" title="常用工具软件">
+      常用工具软件 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Visual-Studio-Code-%E7%BC%96%E8%BE%91%E5%99%A8"><span class="nav-number">1.</span> <span class="nav-text">Visual Studio Code 编辑器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%BC%E5%BC%8F%E5%8C%96%E4%BB%A3%E7%A0%81"><span class="nav-number">2.</span> <span class="nav-text">格式化代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#STM32"><span class="nav-number">3.</span> <span class="nav-text">STM32</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Mengy</p>
+  <div class="site-description" itemprop="description">随便瞎写</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:mengyyytest@gmail.com" title="E-Mail → mailto:mengyyytest@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Mengy</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
